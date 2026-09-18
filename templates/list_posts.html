@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang ="en">
+<head>    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    {% for post in posts %}
+    {% if post.title %}
+    <details style="margin-bottom: 10px">
+    <summary style="cursor: pointer;">
+      <strong>{{ post.title }}</strong> — {{ post.text|truncatewords:5 }}
+    </summary>
+    <p style="margin-top: 8px;">
+      {{ post.text }}
+    </p>
+  </details>
+  <hr>
+  {% endif %}
+{% endfor %}
+</body>
+</html>
