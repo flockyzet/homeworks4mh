@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 0 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .post-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .comments-section {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .comment-item {
+            border-bottom: 1px solid #eee;
+            padding: 12px 0;
+        }
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+        .author {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .date {
+            font-size: 0.8em;
+            color: #888;
+            margin-left: 8px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="post-card">
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.content }}</p>
+        <small style="color: #777;">Опубликовано: {{ post.created_at }}</small>
+    </div>
+
+    <div class="comments-section">
+        <h3>Комментарии</h3>
+        {% for comment in post.comments.all %}
+            <div class="comment-item">
+                <div>
+                    <span class="author">{{ comment.author_name }}</span>
+                    <span class="date">{{ comment.created_at|date:"d.m.Y H:i" }}</span>
+                </div>
+                <p style="margin: 5px 0 0 0;">{{ comment.text }}</p>
+            </div>
+        {% empty %}
+            <p style="color: #777;">Комментариев пока нет.</p>
+        {% endfor %}
+    </div>
+
+    <a href="/" class="back-link">← Назад к списку постов</a>
+
+</body>
+</html>

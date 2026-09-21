@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from django.http.response import HttpResponse
 from posts.models import Post
@@ -20,8 +20,12 @@ def say_name(r, name):
     return HttpResponse(f"<h2 Hello </h2> <h1> {name} </h1>")
 
 
-
 def post_list(r):
     posts = Post.objects.filter(is_published=True)
-
     return render(r, "list_posts.html", {"posts": posts})
+
+
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    return render(request, "post_detail.html", {"post": post})
