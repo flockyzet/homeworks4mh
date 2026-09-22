@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<h2>Мои публикации</h2>
+
+<div style="display: flex; flex-direction: column; gap: 15px;">
+
+    {% for post in posts %}
+
+        <div style="
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f9f9f9;
+        ">
+
+            <h3>
+                <a href="{% url 'post_detail' post.pk %}">
+                    {{ post.title }}
+                </a>
+            </h3>
+
+            <p>
+                {{ post.text|truncatewords:20 }}
+            </p>
+
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+
+                <a
+                    href="{% url 'post_detail' post.pk %}"
+                    style="
+                        padding: 6px 12px;
+                        background: #007bff;
+                        color: white;
+                        border-radius: 4px;
+                        text-decoration: none;
+                    "
+                >
+                    Читать полностью
+                </a>
+
+                <a
+                    href="{% url 'post_delete' post.pk %}"
+                    style="
+                        padding: 6px 12px;
+                        background: #dc3545;
+                        color: white;
+                        border-radius: 4px;
+                        text-decoration: none;
+                    "
+                >
+                    Удалить
+                </a>
+
+            </div>
+
+        </div>
+
+    {% empty %}
+
+        <p>У вас пока нет созданных постов.</p>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

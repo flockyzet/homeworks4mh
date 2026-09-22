@@ -2,71 +2,196 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Список постов</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Все публикации</title>
+
     <style>
         body {
+            margin: 0;
+            padding: 0;
+            background: #f5f7fa;
             font-family: Arial, sans-serif;
-            max-width: 700px;
-            margin: 30px auto;
-            padding: 0 20px;
-            background-color: #f9f9f9;
             color: #333;
         }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 10px;
-            margin-bottom: 25px;
+
+        .posts-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
+
+        .page-title {
+            font-size: 42px;
+            color: #243b5a;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .page-line {
+            height: 2px;
+            background: #dce3eb;
+            margin-bottom: 30px;
+        }
+
         .post-card {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background: white;
+            border-radius: 14px;
+            padding: 28px 30px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #edf0f4;
         }
-        .post-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-        }
+
+        /* Заголовок поста */
         .post-title {
-            margin: 0 0 10px 0;
-            font-size: 1.3em;
+            font-size: 27px;
+            margin: 0 0 16px 0;
         }
+
+        /* Ссылка-заголовок */
         .post-title a {
-            color: #2c3e50;
+            color: #243b5a;
             text-decoration: none;
+            transition: 0.2s;
+            cursor: pointer;
         }
+
+        /* При наведении */
         .post-title a:hover {
-            color: #3498db;
+            color: #2f5d8c;
+            text-decoration: underline;
         }
-        .post-snippet {
-            color: #555;
-            line-height: 1.5;
-            margin-bottom: 12px;
+
+        .post-preview,
+        .post-full-text {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #3d4652;
         }
-        .post-date {
-            font-size: 0.8em;
-            color: #888;
+
+        .post-full-text {
+            display: none;
+            margin-top: 15px;
+            white-space: pre-line;
+        }
+
+        .post-full-text.open {
+            display: block;
+        }
+
+        .read-more-btn {
+            border: none;
+            background: #2f5d8c;
+            color: white;
+            padding: 10px 17px;
+            border-radius: 7px;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .read-more-btn:hover {
+            background: #244a70;
+        }
+
+        .post-status {
+            color: #7c8794;
+            font-size: 14px;
+            margin-top: 18px;
+        }
+
+        .empty-posts {
+            background: white;
+            border: 1px solid #e4e8ed;
+            border-radius: 14px;
+            padding: 40px;
+            text-align: center;
+            color: #697586;
+            font-size: 18px;
         }
     </style>
 </head>
+
 <body>
 
-    <h1>Все публикации</h1>
+<div class="posts-container">
+
+    <h1 class="page-title">Все публикации</h1>
+
+    <div class="page-line"></div>
 
     {% for post in posts %}
-        <div class="post-card">
+
+        <article class="post-card">
+
+            <!-- Заголовок теперь является ссылкой -->
             <h2 class="post-title">
-                <a href="/posts/{{ post.id }}/">{{ post.title }}</a>
+                <a href="{% url 'post_detail' post.pk %}">
+                    {{ post.title }}
+                </a>
             </h2>
-            <p class="post-snippet">{{ post.text|truncatewords:20 }}</p>
-            <div class="post-date">Опубликовано: {{ post.created_at|date:"d.m.Y H:i" }}</div>
-        </div>
+
+            <!-- Краткий текст -->
+            <div class="post-preview">
+                {{ post.text|truncatechars:180 }}
+            </div>
+
+            <!-- Полный текст -->
+            <div
+                id="full-text-{{ post.pk }}"
+                class="post-full-text"
+            >
+                {{ post.text }}
+            </div>
+
+            <!-- Кнопка полного текста -->
+            {% if post.text|length > 180 %}
+
+                <button
+                    type="button"
+                    class="read-more-btn"
+                    onclick="toggleText('{{ post.pk }}', this)"
+                >
+                    Читать полностью
+                </button>
+
+            {% endif %}
+
+            <div class="post-status">
+                Опубликовано
+            </div>
+
+        </article>
+
     {% empty %}
-        <p style="color: #777;">Постов пока нет.</p>
+
+        <div class="empty-posts">
+            Пока нет опубликованных постов.
+        </div>
+
     {% endfor %}
 
+</div>
+
+<script>
+    function toggleText(postId, button) {
+
+        const text = document.getElementById("full-text-" + postId);
+
+        if (text.classList.contains("open")) {
+
+            text.classList.remove("open");
+            button.textContent = "Читать полностью";
+
+        } else {
+
+            text.classList.add("open");
+            button.textContent = "Свернуть";
+
+        }
+    }
+</script>
+
 </body>
-</html
+</html>

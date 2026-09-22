@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мой Blog</title>
+</head>
+<body>
+   
+     <nav style="margin-bottom: 20px;">
+    <a href="{% url 'post_list' %}">Главная</a> |
+    <a href="{% url 'my_posts' %}">Мои посты</a> |
+    <a href="{% url 'create_post' %}"><b>+ Создать пост</b></a>
+</nav>
+
+    <hr>
+
+    {% block main %}
+    {% endblock %}
+</body>
+</html>

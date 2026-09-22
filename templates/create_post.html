@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div style="max-width: 600px; margin: 30px auto; padding: 25px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); font-family: sans-serif;">
+    <h2 style="margin-top: 0; color: #2c3e50; font-size: 24px; border-bottom: 2px solid #f0f0f0; padding-bottom: 12px;">
+        
+    </h2>
+
+    <form method="post" style="display: flex; flex-direction: column; gap: 18px; margin-top: 20px;">
+        {% csrf_token %}
+        
+        <style>
+            /* Красивые стили для полей ввода Django */
+            .form-container p {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                margin: 0;
+                font-weight: 600;
+                color: #4a5568;
+            }
+            .form-container input[type="text"], 
+            .form-container textarea {
+                width: 100%;
+                padding: 10px 14px;
+                border: 1px solid #cbd5e0;
+                border-radius: 6px;
+                font-size: 15px;
+                box-sizing: border-box;
+                transition: border-color 0.2s;
+            }
+            .form-container input[type="text"]:focus, 
+            .form-container textarea:focus {
+                border-color: #3182ce;
+                outline: none;
+            }
+            .form-container textarea {
+                min-height: 120px;
+                resize: vertical;
+            }
+            .form-container input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                cursor: pointer;
+            }
+        </style>
+
+        <div class="form-container" style="display: flex; flex-direction: column; gap: 15px;">
+            {{ form.as_p }}
+        </div>
+
+        <button type="submit" style="margin-top: 10px; padding: 12px 20px; background: #2b6cb0; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#2c5282'" onmouseout="this.style.background='#2b6cb0'">
+            Опубликовать пост
+        </button>
+    </form>
+</div>
+{% endblock %}

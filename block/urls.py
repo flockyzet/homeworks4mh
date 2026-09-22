@@ -18,16 +18,26 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from posts.views import hello_world, my_name, say_name, post_list, post_detail, delete_post
+from posts.views import (
+    hello_world, my_name, say_name, 
+    post_list, post_detail, delete_post, my_posts, create_post
+)
 from django.urls import path
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("helllo/", hello_world),
-    path("name/", my_name),
-    path("name/<str:name>", say_name),
-    path("", post_list, name ="post_list"),
-    path("posts/<int:pk>/", post_detail, name ="post_detail"),
+
+    path('hello/', hello_world),
+    path('name/', my_name),
+    path('name/<str:name>', say_name),
+
+    path('', post_list, name='post_list'),
+
+    path('posts/<int:pk>/', post_detail, name='post_detail'),
     path('posts/<int:pk>/delete', delete_post, name='post_delete'),
+
+    path('my-posts/', my_posts, name='my_posts'),
+
+    path('create/', create_post, name='create_post'),
 ]
